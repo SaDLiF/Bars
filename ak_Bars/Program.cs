@@ -240,9 +240,7 @@ namespace ak_Bars
             Console.Clear();
             Thread.Sleep(100);
 
-            Console.WriteLine("Загрузка файлов на яндекс диск");
-            Console.WriteLine("");
-            Console.WriteLine("");
+            Console.WriteLine("Загрузка файлов на яндекс диск \n\n");
 
             IEnumerable<Task<string>> downloadTasksQuery =
                 from url in files
@@ -262,7 +260,7 @@ namespace ak_Bars
         async Task<string> ProcessUrlAsync(Folders files, string path_disk)
         {
             List_Upload.Add(new Status { name = files.name, status = "Загрузка 0 %" });
-            Console.WriteLine($"{files.name} Загрузка 0 %");
+            Console.WriteLine($"{files.name} - Загрузка 0 %");
             await yandex.UploadAsync(files.path, $"{path_disk}/{files.name}", new AsyncProgress(this.UpdateProgress));
             return files.name;
         }
@@ -270,7 +268,9 @@ namespace ak_Bars
         #region Timer
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            Console.SetCursorPosition(0, 3);
+            Console.SetCursorPosition(0, 2);
+            var count = List_Upload.Where(t => t.status == "Загрузка 100 %").ToList().Count;
+            Console.WriteLine($"Загружено файлов {count} из {List_Upload.Count}");
             foreach (var t in List_Upload)
             {
                 Console.WriteLine($"{t.name} - {t.status}");
@@ -279,8 +279,8 @@ namespace ak_Bars
             Thread.Sleep(100);
             Console.SetCursorPosition(0, 2);
 
-            var count = List_Upload.Where(t => t.status == "Загрузка 100 %").ToList().Count;
-            Console.WriteLine($"Загружено файлов {count} из {List_Upload.Count}");
+            
+            
         }
 
         #endregion
